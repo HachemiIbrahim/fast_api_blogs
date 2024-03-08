@@ -6,9 +6,16 @@ app = FastAPI()
 
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def index():
+    return {'data' : 'blog list'}
 
-@app.get("/about")
-def about():
-    return {'data' : 'about page'}
+@app.get("/blog/published")
+def fetchBlog():
+    return{"data" : "published"}
+
+
+@app.get("/blog/{id}")
+def fetchBlog(id: int):
+    return{"data" : id}
+
+
