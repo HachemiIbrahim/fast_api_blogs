@@ -21,3 +21,13 @@ def creating(request:schema.Blog , db : Session = Depends(get_db)):
     db.commit()
     db.refresh(new_blog)
     return new_blog
+
+@app.get("/blog")
+def show_all( db : Session = Depends(get_db)):
+    blogs = db.query(models.Blog).all()
+    return blogs
+
+@app.get("/blogs/{id}")
+def get(id ,  db : Session = Depends(get_db)):
+    blog = db.query(models.Blog).filter(models.Blog.id == id).first()
+    return blog
