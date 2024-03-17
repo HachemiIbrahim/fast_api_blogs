@@ -52,3 +52,13 @@ def get(id ,  response : Response,db : Session = Depends(get_db)):
     if not blog:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"the blog with the id {id} is not found")
     return blog
+
+
+@app.post("/user" , status_code=status.HTTP_201_CREATED)
+def create_user(request:schema.User , db : Session = Depends(get_db)):
+    user_data = request.dict()
+    new_user = models.User(**user_data)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
