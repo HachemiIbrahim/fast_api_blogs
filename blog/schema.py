@@ -33,3 +33,5 @@ class ShowBlog(BaseModel):
     writenBy:User
     class Config:
         orm_mode = True
+
+
