@@ -6,9 +6,12 @@ from ..hasing import Hash
 from typing import List
 
 
-router = APIRouter()
+router = APIRouter(
+ tags=["Blogs"],
+ prefix="/blog"
+ )
 
-@router.post("/blog" , status_code=status.HTTP_201_CREATED , tags=["blogs"])
+@router.post("/" , status_code=status.HTTP_201_CREATED)
 def creating(request:schema.Blog , db : Session = Depends(get_db)):
     new_blog = models.Blog(title = request.title ,body = request.body , user_id = 1)
     db.add(new_blog)
@@ -16,12 +19,12 @@ def creating(request:schema.Blog , db : Session = Depends(get_db)):
     db.refresh(new_blog)
     return new_blog
 
-@router.get("/blog" , response_model=List[schema.ShowBlog], tags=["blogs"])
+@router.get("/" , response_model=List[schema.ShowBlog])
 def show_all( db : Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
-@router.delete("/blog/{id}" , status_code=status.HTTP_204_NO_CONTENT, tags=["blogs"])
+@router.delete("/{id}" , status_code=status.HTTP_204_NO_CONTENT)
 def delete(id ,  response : Response,db : Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id)
     if not blog:
@@ -30,7 +33,7 @@ def delete(id ,  response : Response,db : Session = Depends(get_db)):
     db.commit()
     
     
-@router.put('/blog/{id}',status_code=status.HTTP_202_ACCEPTED ,  tags=["blogs"])
+@router.put('/{id}',status_code=status.HTTP_202_ACCEPTED )
 def update(id,request:schema.Blog,db:Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id==id)
     if not blog.first():
@@ -39,7 +42,7 @@ def update(id,request:schema.Blog,db:Session=Depends(get_db)):
     db.commit()
     return {'updated'}
 
-@router.get("/blogs/{id}" , status_code=status.HTTP_200_OK , response_model=schema.ShowBlog ,  tags=["blogs"])
+@router.get("/{id}" , status_code=status.HTTP_200_OK , response_model=schema.ShowBlog)
 def get(id ,  response : Response,db : Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blog:
