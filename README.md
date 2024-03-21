@@ -1,4 +1,4 @@
- # FastAPI Blog tutorial
+ # FastAPI Blogs
 
 This project is a FastAPI application that allows users to create an account, write blogs, and manage their content. It includes authentication and ensures that routes are accessible only to authenticated users.
 
